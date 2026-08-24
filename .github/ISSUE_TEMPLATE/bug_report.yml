@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a problem in the presentation, scripts, or infrastructure.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve this project.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Presentation content
+        - Presentation rendering
+        - PowerShell
+        - Bash
+        - Bicep
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem
+      description: Describe what happened and what you expected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, shell, CLI, and browser versions when relevant.
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I removed secrets and sensitive data from this report.
+          required: true
+        - label: I searched for an existing issue.
+          required: true

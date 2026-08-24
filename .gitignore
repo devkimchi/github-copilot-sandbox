@@ -1,0 +1,42 @@
+# Ignore every file by default.
+*
+
+# Allow Git to traverse directories while keeping their files ignored.
+!assets/
+
+# Repository configuration.
+!.gitignore
+!.gitattributes
+!.editorconfig
+!.markdownlint.json
+
+# Repository health files.
+!LICENSE
+!README.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!SECURITY.md
+!CHANGELOG.md
+!.github/
+!.github/**
+
+# Presentation source and referenced assets.
+!ai-agent-sandboxing.md
+!assets/**
+
+# Generated GitHub Pages entrypoint.
+index.html
+
+# PowerShell scripts and modules.
+!*.ps1
+!*.psm1
+!*.psd1
+
+# Bash and shell scripts.
+!*.sh
+!*.bash
+
+# Bicep infrastructure files.
+!*.bicep
+!*.bicepparam
+!*.parameters.json

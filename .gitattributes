@@ -1,0 +1,39 @@
+# Auto-detect text files and normalize line endings.
+* text=auto
+
+# Unix shell scripts require LF.
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows PowerShell files use CRLF.
+*.ps1 text eol=crlf
+*.psm1 text eol=crlf
+*.psd1 text eol=crlf
+
+# Documentation and infrastructure files use LF.
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.bicep text eol=lf
+*.bicepparam text eol=lf
+
+# Binary files are never line-ending converted or diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.pptx binary
+*.zip binary
+*.tar.gz binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+*.svg text
+*.min.js linguist-generated
+*.min.css linguist-generated

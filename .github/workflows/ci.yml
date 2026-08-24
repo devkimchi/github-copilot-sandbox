@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate Marp presentation
+        run: |
+          mkdir -p site
+          npx --yes @marp-team/marp-cli@4 \
+            ai-agent-sandboxing.md \
+            --html \
+            --allow-local-files \
+            -o site/index.html
+
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $hasErrors = $false
+          $files = Get-ChildItem -Recurse -File -Include *.ps1, *.psm1, *.psd1 |
+            Where-Object { $_.FullName -notmatch '[\\/]\.git[\\/]' }
+
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $file.FullName,
+              [ref] $tokens,
+              [ref] $errors
+            ) | Out-Null
+
+            if ($errors.Count -gt 0) {
+              $hasErrors = $true
+              $errors | ForEach-Object {
+                Write-Error "$($file.FullName): $($_.Message)"
+              }
+            }
+          }
+
+          if ($hasErrors) {
+            exit 1
+          }
+
+      - name: Validate Bash syntax
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            bash -n "$file"
+          done < <(
+            find . -type f \( -name '*.sh' -o -name '*.bash' \) \
+              -not -path './.git/*' -print0
+          )
+
+      - name: Validate Bicep files
+        shell: bash
+        run: |
+          if find . -type f -name '*.bicep' -not -path './.git/*' | grep -q .; then
+            az bicep install
+            while IFS= read -r file; do
+              az bicep build --file "$file" --stdout > /dev/null
+            done < <(
+              find . -type f -name '*.bicep' -not -path './.git/*'
+            )
+          fi
+
+          if find . -type f -name '*.bicepparam' -not -path './.git/*' | grep -q .; then
+            az bicep install
+            while IFS= read -r file; do
+              az bicep build-params --file "$file" --stdout > /dev/null
+            done < <(
+              find . -type f -name '*.bicepparam' -not -path './.git/*'
+            )
+          fi
+
+      - name: Configure GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
