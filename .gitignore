@@ -23,6 +23,8 @@
 # Presentation source and referenced assets.
 !ai-agent-sandboxing.md
 !assets/**
+!docs/
+!docs/**
 
 # Generated GitHub Pages entrypoint.
 index.html
