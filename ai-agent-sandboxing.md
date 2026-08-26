@@ -368,6 +368,10 @@ section.opening > p {
   width: auto;
 }
 
+.value-grid .infinity-icon {
+  font-size: 30px;
+}
+
 .flow {
   align-items: center;
   display: flex;
@@ -953,10 +957,10 @@ Docker 샌드박스와 Azure Container Apps 샌드박스로 피해 범위 통제
 <!--
 발표자 노트 · 00:00–01:00 · 1분
 
-안녕하세요. Microsoft와 GitHub에서 수석 디벨로퍼 아드보캇으로 일하며 Docker Captain으로 활동하고 있는 유저스틴입니다.
-오늘은 AI 코딩 에이전트를 더 믿게 만드는 방법이 아니라, 덜 믿어도 안전하게 사용할 수 있는 실행 경계를 이야기합니다.
-두 제품 모두 컨테이너 이미지를 활용하지만, 핵심 보안 경계는 일반 컨테이너가 아니라 별도 커널을 사용하는 microVM입니다.
-발표는 로컬 Docker 샌드박스와 클라우드의 ACA 샌드박스를 두 개의 서로 다른 운영 모델로 비교합니다.
+- 자기 소개
+- GHCP와 같은 AI 코딩 에이전트가 갑자기 디렉토리를 삭제했다거나 하는 경험이 있나?
+- AI 에이전트는 종종 예상하지 않은 방향으로 튈 때가 있음. 이런 경우에도 안전하게 사용할 수 있어야 함
+- 오늘은 샌드박스 기능에 대해 얘기해 보려고 함
 -->
 
 ---
@@ -971,9 +975,11 @@ AI 에이전트는 <em>내 권한으로</em>,<br>
 <!--
 발표자 노트 · 01:00–02:00 · 1분
 
-AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수정하고, 패키지를 설치하고, 셸 명령을 실행하고, 네트워크에 접속합니다.
-문제는 에이전트가 가진 능력 자체보다 그 능력이 우리 노트북의 권한과 직접 연결된다는 점입니다.
-오늘의 질문은 '에이전트를 신뢰할 수 있는지'가 아니라 '잘못된 행동의 영향 범위를 어디까지 허용할지'입니다.
+- GHCP가 처음 나왔을 때는 코드를 제안하는 수준이었음
+- 이제는 직접 파일을 수정하고, 패키지 설치하고, 셸 명령 실행하고, 네트워크에 접속함
+- 점점 코딩 에이전트의 성능이 올라가면서 내 PC의 권한을 마음대로 부릴 수 있게 됨
+- 문제가 생길 수 있는 여지가 충분히 있지만, 그렇다고 권한을 허용하지 않자니 제약이 너무 많음
+- 권한을 허용할 경우 문제가 생긴다면, 문제가 생길 수 있는 범위를 어디까지 허용해야 할까?
 -->
 
 ---
@@ -987,7 +993,7 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 02:00–02:10 · 10초
 
-먼저 AI 코딩 에이전트가 로컬 환경에서 만들 수 있는 위험과 이를 통제하기 위해 필요한 경계를 살펴봅니다.
+- 로컬 개발 환경에서 코딩 에이전트가 만들어 낼 수 있는 위험 요소와 이를 통제하기 위한 경계는 어떤 것들이 있을까?
 -->
 
 ---
@@ -1004,12 +1010,13 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 02:10–04:10 · 2분
 
-위협을 다섯 가지로 묶어 보겠습니다.
-첫째는 파일 손상입니다. 에이전트가 잘못된 경로를 대상으로 명령을 실행할 수 있습니다.
-둘째는 자격 증명입니다. 환경 변수나 설정 파일에 있는 토큰을 읽을 수 있습니다.
-셋째는 네트워크를 통한 정보 유출, 넷째는 악성 의존성 설치와 공급망 공격입니다.
-마지막으로 Docker 소켓처럼 강력한 로컬 인터페이스에 접근하면 사실상 호스트 전체를 제어할 수 있습니다.
-이 위협 모델은 데모에서 무엇을 관찰해야 하는지 정하는 기준이 됩니다.
+- 다섯 가지 정도로 봄
+- 원하지 않는 파일을 건드릴 수 있음
+- 환경 변수라든가 설정 파일에 있는 토큰을 읽을 수 있음
+- 연결된 네트워크를 통해 정보가 유출될 수 있음
+- 공급망 공격을 통한 악성 패키지 설치
+- 도커 소켓을 통해 호스트를 장악할 수 있는 가능성
+- 그렇다면 이 위험 요소를 통제하면 되지 않을까?
 -->
 
 ---
@@ -1029,9 +1036,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 04:10–04:40 · 30초
 
-이 문제를 해결하려고 에이전트의 권한을 모두 제거하면 실제 작업을 수행할 수 없습니다.
-그래서 필요한 것이 Docker 샌드박스입니다.
-에이전트는 microVM 안에서 필요한 권한을 유지하지만, 호스트와 공유하지 않은 파일과 자원에는 접근하지 못하도록 실행 경계를 분리합니다.
+- 이 위험 요소를 통제하기 위해 에이전트의 권한을 제거하면 작업을 할 수가 없음
+- 그래서 나온 것이 바로 도커 샌드박스임
+- 에이전트는 microVM 안에서 필요한 모든 권한을 유지함
+- 동시에 호스트에서 공유하지 않은 파일과 자원에는 접근할 수 없음
 -->
 
 ---
@@ -1048,11 +1056,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 04:40–06:00 · 1분 20초
 
-샌드박스는 단순히 컨테이너를 하나 띄우는 이야기가 아닙니다.
-컴퓨트, 파일, 네트워크, 자격 증명, 수명주기라는 다섯 경계를 함께 설계해야 합니다.
-에이전트는 샌드박스 내부에서는 sudo를 포함한 충분한 권한을 가질 수 있습니다.
-대신 호스트 파일, 네트워크 목적지, 비밀 값, 실행 환경의 생명주기는 샌드박스 밖의 정책이 강제합니다.
-이것이 자율성과 통제를 동시에 얻는 핵심 패턴입니다.
+- 샌드박스는 단순한 컨테이너라기 보다는 하나의 VM임
+- 그 안에서 에이전트는 sudo 권한을 포함해서 충분한 권한을 가질 수 있음
+- 대신 호스트 파일에 접근하지 못하고, 네트워크 접근 권한이 제한적이고, 시크릿 값은 호스트에서 프록시로 제공하고, 샌드박스의 라이프사이클은 호스트에서 관리함
+- 이런 식으로 자율성과 통제를 동시에 구현할 수 있음
 -->
 
 ---
@@ -1075,11 +1082,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 06:00–07:30 · 1분 30초
 
-Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
-에이전트는 VM 안에서 높은 권한을 가지지만 호스트와 커널, 메모리, 프로세스를 공유하지 않습니다.
-호스트 Docker 데몬도 직접 접근할 수 없고, 샌드박스 내부에 별도의 Docker Engine이 있습니다.
-경계를 통과하는 것은 명시적으로 공유한 워크스페이스, 호스트 프록시를 통한 네트워크 요청, 프록시가 주입하는 자격 증명입니다.
-중요한 점은 '아무것도 할 수 없습니다'가 아니라 '정해진 통로로만 실행합니다'라는 것입니다.
+- 샌드박스의 기본 경계는 microVM임
+- 이 안에서 높은 권한을 가지지만 호스트가 공유하기 전에는 호스트에 접근할 수 없음
+- 호스트의 도커 엔진에 접근 못함. 샌드박스 내부의 도커 엔진을 쓸 수 있음
+- 즉, 샌드박스 안에서는 정해진 경로로만 외부와 소통한다는 것
 -->
 
 ---
@@ -1109,11 +1115,10 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!--
 발표자 노트 · 07:30–09:00 · 1분 30초
 
-여기가 오늘 발표에서 가장 중요한 기술적 보정입니다.
-기본 Direct 모드는 프로젝트 디렉터리를 읽기·쓰기로 공유하므로, 에이전트가 수정한 파일은 호스트에서 즉시 보입니다.
-호스트 운영체제는 격리되지만 작업 트리는 격리되지 않습니다.
-코드 변경까지 분리하려면 Clone 모드를 사용해야 합니다.
-데모는 반드시 Clone 모드로 진행하고, 마지막에 diff를 검토한 뒤 반영하는 흐름을 보여주겠습니다.
+- 도커 샌드박스에서 제공하는 코드 접근 원칙이 두 가지가 있음
+- 다이렉트 모드와 클론 모드가 둘 다 장단점이 있음
+- 다이렉트 모드의 경우 호스트와 프로젝트를 공유함. 빠른 반영이 가능함. 대신 격리 수준이 낮음
+- 클론 모드의 경우 호스트와 프로젝트를 공유하지 않음. 코드 변경 사항은 PR로 처리해야 함. 높은 수준으로 격리가 가능함
 -->
 
 ---
@@ -1122,17 +1127,20 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!-- _paginate: false -->
 
 <div class="demo-kicker">DEMO #1</div>
-<div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div>
+<!-- <div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div> -->
+<div class="demo-name">Docker 샌드박스에서<br>.NET 앱 현대화하기</div>
 
 <!--
 발표자 노트 · 09:00–09:10 · 10초
 
-첫 번째 데모에서는 Docker 샌드박스 안에서 GitHub Copilot CLI와 앱 현대화 플러그인을 사용해 Java 애플리케이션을 현대화합니다.
+- 그럼 첫번째 데모를 보쟈
+- 도커 샌드박스 안에서 GHCP CLI와 앱 현대화 플러그인을 통해 앱을 현대화 해 보쟈
 -->
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <ul class="checklist">
   <li>GitHub Copilot CLI를 Docker 샌드박스에서 실행합니다</li>
   <li>GitHub Copilot modernization 플러그인을 설치합니다</li>
@@ -1144,21 +1152,20 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!--
 발표자 노트 · 09:10–09:50 · 40초
 
-첫 번째 데모에서 보여줄 포인트를 먼저 합의하겠습니다.
-먼저 샌드박스 안에 GitHub Copilot modernization 플러그인을 설치하고 전용 modernize 에이전트를 선택합니다.
-이 에이전트는 Java 애플리케이션을 진단하고, 실행 가능한 계획을 만든 뒤, 전문 실행 에이전트에 작업을 배분합니다.
-목표는 단순한 코드 생성을 보여주는 것이 아니라 전문 에이전트의 오케스트레이션이 샌드박스 경계 안에서 동작하는 모습을 확인하는 것입니다.
+- 이번 데모에서는 이런 것들을 보여줄 거임
+- 앱 현대화 자체를 하는 것도 중요하지만, 이게 샌드박스 안에서만 동작하는 것을 보는게 중요함
 -->
 
 ---
 
 <!-- _class: auth-command-slide -->
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 ```bash
 sbx secret set github --command 'gh auth token'
-sbx run --clone --name java-modernize copilot .
-sbx exec -it java-modernize bash
+sbx run --clone --name java-appmod copilot .
+sbx exec -it java-appmod bash
 ```
 
 <div class="flow">
@@ -1172,17 +1179,17 @@ sbx exec -it java-modernize bash
 <!--
 발표자 노트 · 09:50–11:10 · 1분 20초
 
-먼저 GitHub 토큰을 샌드박스 내부에 복사하지 않고 호스트 측 비밀 저장소에 등록합니다.
-sbx run 명령으로 Copilot 템플릿을 사용하는 java-modernize 샌드박스를 Clone 모드로 생성하고 GitHub Copilot CLI를 바로 실행합니다.
-원본 저장소는 읽기 전용으로 연결되고, 에이전트는 microVM 내부의 비공개 복제본에서 작업합니다.
-플러그인을 설치하거나 내부 상태를 확인할 때는 별도 터미널에서 sbx exec 명령으로 같은 샌드박스의 셸에 접속합니다.
+- 깃헙 토큰을 호스트의 시크릿으로 저장함
+- 그 다음에 샌드박스를 하나 클론 모드로 열면서 곧바로 GHCP CLI를 실행함
+- 또는 sbx exec 명령어를 통해 샌드박스의 bash 셸로 들어감
 -->
 
 ---
 
 <!-- _class: plugin-command-slide -->
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <pre><code><span class="cli-command">/plugin</span> <span class="cli-keyword">marketplace</span> <span class="cli-keyword">add</span> <span class="cli-value">microsoft/github-copilot-modernization</span>
 <span class="cli-command">/plugin</span> <span class="cli-keyword">install</span> <span class="cli-value">github-copilot-modernization@github-copilot-modernization</span></code></pre>
 
@@ -1197,11 +1204,13 @@ sbx run 명령으로 Copilot 템플릿을 사용하는 java-modernize 샌드박�
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <div class="agent-select"><code>copilot</code> → <code>/agent</code> → <strong>github-copilot-modernization:modernize</strong></div>
 
 <div class="flow">
-  <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div>
+  <!-- <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div> -->
+  <div class="node"><b>Assessment</b><span>의존성·.NET·위험 분석</span></div>
   <div class="arrow">→</div>
   <div class="node"><b>Planning</b><span>실행 가능한 작업 계획</span></div>
   <div class="arrow">→</div>
@@ -1227,8 +1236,10 @@ Planning 단계에서는 plan.md와 tasks.json을 생성하며, Execution 단계
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
-<div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div>
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+<!-- <div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div> -->
+<div class="prompt-box">이 앱을 .NET 10으로 현대화 해줘</div>
 
 <!--
 발표자 노트 · 13:40–17:00 · 3분 20초
@@ -1306,8 +1317,8 @@ Portal, CLI, SDK, Bicep, Skills를 통해 샌드박스를 생성하고 관리할
 
 <div class="grid-3 value-grid">
   <div class="card"><div class="icon">&lt; 1s</div><b>빠른 시작</b><p>사전 준비 풀을 활용한 sub-second 프로비저닝</p></div>
-  <div class="card"><div class="icon">♾️</div><b>대규모 확장</b><p>Zero-to-Scale · 0에서 수천 개의 동시 샌드박스로 확장</p></div>
-  <div class="card"><div class="icon">⏸️ ▶️</div><b>Suspend / Resume</b><p>유휴 시 상태를 보존하고 빠르게 재개</p></div>
+  <div class="card"><div class="icon infinity-icon">&#x221E;</div><b>대규모 확장</b><p>Zero-to-Scale · 0에서 수천 개의 동시 샌드박스로 확장</p></div>
+  <div class="card"><div class="icon">&#x23F8;&#xFE0E; &#x25B6;&#xFE0E;</div><b>Suspend / Resume</b><p>유휴 시 상태를 보존하고 빠르게 재개</p></div>
   <div class="card"><div class="icon">ID</div><b>Azure 거버넌스</b><p>Entra ID, RBAC, Azure 리소스 경계</p></div>
   <div class="card"><div class="icon">VNet</div><b>네트워크</b><p>수신·송신 정책과 가상 네트워크 통합</p></div>
   <div class="card"><div class="icon">OCI</div><b>사용자 이미지</b><p>준비된 도구 체인을 루트 파일시스템으로 사용</p></div>
@@ -1354,7 +1365,7 @@ ACA가 더하는 가치는 여섯 가지입니다.
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox create</span> \
   --disk <span class="aca-value">copilot</span> \
   --credential <span class="aca-value">&lt;copilot-credential-id&gt;</span> \
-  --label <span class="aca-value">name=copilot-demo</span></code></pre>
+  --label <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
 </div>
 
@@ -1381,11 +1392,11 @@ ACA가 더하는 가치는 여섯 가지입니다.
 
 ## 데모 #2: ACA 샌드박스에서 Copilot CLI 활용하기
 
-<pre><code><span class="shell-prompt">$</span> <span class="shell-command">aca sandbox shell</span> <span class="shell-value">-l name=copilot-demo</span>
+<pre><code><span class="shell-prompt">$</span> <span class="shell-command">aca sandbox shell</span> <span class="shell-value">-l name=ghcp-demo</span>
 
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">git clone</span> <span class="shell-url">https://github.com/OWNER/REPO.git</span>
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">cd</span> <span class="shell-value">REPO</span>
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">copilot</span></code></pre>
+<span class="shell-prompt">ghcp-demo$</span> <span class="shell-command">git clone</span> <span class="shell-url">https://github.com/devkimchi/battle-school-lunch.git</span>
+<span class="shell-prompt">ghcp-demo$</span> <span class="shell-command">cd</span> <span class="shell-value">battle-school-lunch</span>
+<span class="shell-prompt">ghcp-demo$</span> <span class="shell-command">copilot</span></code></pre>
 
 <div class="creation-result">
   <b>Clone</b><span class="arrow">→</span>
@@ -1424,12 +1435,12 @@ Copilot CLI가 시작되면 실제 코드 수정 대신 변경 계획만 작성�
   <div class="aca-command-card">
     <h3>1 · Suspend</h3>
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox stop</span> \
-  -l <span class="aca-value">name=copilot-demo</span></code></pre>
+  -l <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
   <div class="aca-command-card">
     <h3>2 · Resume</h3>
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox resume</span> \
-  -l <span class="aca-value">name=copilot-demo</span></code></pre>
+  -l <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
 </div>
 
@@ -1576,7 +1587,8 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
     <div class="source-card"><b>Docker 샌드박스에서 GitHub Copilot CLI 실행하기</b><a href="https://docs.docker.com/ai/sandboxes/agents/copilot/">docs.docker.com/ai/sandboxes/agents/copilot</a></div>
   </div>
   <div class="source-column">
-    <div class="source-card"><b>Copilot CLI로 Java 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmode/java">aka.ms/ghcp/appmode/java</a></div>
+    <div class="source-card"><b>Copilot CLI로 Java 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmod/java">aka.ms/ghcp/appmod/java</a></div>
+    <div class="source-card"><b>Copilot CLI로 .NET 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmod/dotnet">aka.ms/ghcp/appmod/dotnet</a></div>
     <div class="source-card"><b>Azure Container Apps 샌드박스 소개</b><a href="https://aka.ms/aca/sandboxes">aka.ms/aca/sandboxes</a></div>
     <div class="source-card"><b>Azure Container Apps 샌드박스 문서</b><a href="https://sandboxes.azure.com/docs">sandboxes.azure.com/docs</a></div>
   </div>
