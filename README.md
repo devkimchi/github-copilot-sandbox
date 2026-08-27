@@ -22,10 +22,11 @@ The primary presentation was prepared for various conferences and meetups, and c
 The [demo documentation index](docs/README.md) provides two complete,
 sequential walkthroughs:
 
-| Demo                                      | Setup                         | Runbook                           | Validation and recovery                              |
-| ----------------------------------------- | ----------------------------- | --------------------------------- | ---------------------------------------------------- |
-| 1. Java modernization in a Docker Sandbox | [Setup](docs/demo-1-setup.md) | [Runbook](docs/demo-1-runbook.md) | [Validation](docs/demo-1-validation-and-recovery.md) |
-| 2. Copilot CLI in an ACA Sandbox          | [Setup](docs/demo-2-setup.md) | [Runbook](docs/demo-2-runbook.md) | [Validation](docs/demo-2-validation-and-recovery.md) |
+| Demo                                       | Setup                         | Runbook                                  | Validation and recovery                                     |
+| ------------------------------------------ | ----------------------------- | ---------------------------------------- | ----------------------------------------------------------- |
+| 1a. Java modernization in a Docker Sandbox | [Setup](docs/demo-1-setup.md) | [Runbook](docs/demo-1-runbook-java.md)   | [Validation](docs/demo-1-validation-and-recovery-java.md)   |
+| 1b. .NET modernization in a Docker Sandbox | [Setup](docs/demo-1-setup.md) | [Runbook](docs/demo-1-runbook-dotnet.md) | [Validation](docs/demo-1-validation-and-recovery-dotnet.md) |
+| 2. Copilot CLI in an ACA Sandbox           | [Setup](docs/demo-2-setup.md) | [Runbook](docs/demo-2-runbook.md)        | [Validation](docs/demo-2-validation-and-recovery.md)        |
 
 ## Preview the presentation
 

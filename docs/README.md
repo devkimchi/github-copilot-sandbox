@@ -3,14 +3,14 @@
 These documents support the live demos in
 [`ai-agent-sandboxing.md`](../ai-agent-sandboxing.md).
 
-## Demo 1: Java modernization in a Docker Sandbox
+## Demo 1: App modernization in a Docker Sandbox
 
 1. [Environment setup](demo-1-setup.md) - install `sbx`, prepare credentials,
-   clone the sample, and establish a clean baseline.
-2. [Live demo runbook](demo-1-runbook.md) - create the clone-mode sandbox,
-   modernize the Java application, and show the isolation evidence.
-3. [Validation and recovery](demo-1-validation-and-recovery.md) - inspect,
-   preserve, troubleshoot, and clean up the result.
+   clone either sample, and establish a clean baseline.
+2. Choose the [Java live demo runbook](demo-1-runbook-java.md) or the
+   [.NET live demo runbook](demo-1-runbook-dotnet.md).
+3. Continue with [Java validation and recovery](demo-1-validation-and-recovery-java.md)
+   or [.NET validation and recovery](demo-1-validation-and-recovery-dotnet.md).
 
 ## Demo 2: Copilot CLI in an ACA Sandbox
 
@@ -27,14 +27,15 @@ These documents support the live demos in
 The demo should make four points visible:
 
 - Copilot CLI runs inside an isolated microVM.
-- The modernization agent assesses, plans, and executes the Java upgrade.
+- The modernization agent assesses, plans, and executes a Java or .NET upgrade.
 - The agent uses a private Git clone and cannot write to the host repository.
 - The sandbox has its own Docker daemon and policy-controlled network access.
 
-The sample application is
-[`UW-Madison-DoIT/uportal-messaging`](https://github.com/UW-Madison-DoIT/uportal-messaging).
-Its current baseline makes the change easy to explain: Java 8, Spring Boot
-1.5.9.RELEASE, Maven, WAR packaging, and an OpenJDK 8 Travis CI build.
+The sample applications are
+[`UW-Madison-DoIT/uportal-messaging`](https://github.com/UW-Madison-DoIT/uportal-messaging)
+for Java and
+[`Azure-Samples/dotnet-migration-copilot-samples`](https://github.com/Azure-Samples/dotnet-migration-copilot-samples)
+for .NET.
 
 ## Demo 2 outcome
 
