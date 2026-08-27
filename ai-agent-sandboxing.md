@@ -368,6 +368,10 @@ section.opening > p {
   width: auto;
 }
 
+.value-grid .infinity-icon {
+  font-size: 30px;
+}
+
 .flow {
   align-items: center;
   display: flex;
@@ -644,6 +648,27 @@ section.closing::before {
   right: 0;
   text-align: center;
   top: 330px;
+}
+
+.closing-links {
+  display: grid;
+  font-size: 26px;
+  gap: 8px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 470px;
+}
+
+.closing-links a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.closing-links strong {
+  display: inline-block;
+  margin-right: 8px;
 }
 
 .closing-speaker {
@@ -953,10 +978,10 @@ Docker 샌드박스와 Azure Container Apps 샌드박스로 피해 범위 통제
 <!--
 발표자 노트 · 00:00–01:00 · 1분
 
-안녕하세요. Microsoft와 GitHub에서 수석 디벨로퍼 아드보캇으로 일하며 Docker Captain으로 활동하고 있는 유저스틴입니다.
-오늘은 AI 코딩 에이전트를 더 믿게 만드는 방법이 아니라, 덜 믿어도 안전하게 사용할 수 있는 실행 경계를 이야기합니다.
-두 제품 모두 컨테이너 이미지를 활용하지만, 핵심 보안 경계는 일반 컨테이너가 아니라 별도 커널을 사용하는 microVM입니다.
-발표는 로컬 Docker 샌드박스와 클라우드의 ACA 샌드박스를 두 개의 서로 다른 운영 모델로 비교합니다.
+- 자기 소개
+- GHCP와 같은 AI 코딩 에이전트가 갑자기 디렉토리를 삭제했다거나 하는 경험이 있나?
+- AI 에이전트는 종종 예상하지 않은 방향으로 튈 때가 있음. 이런 경우에도 안전하게 사용할 수 있어야 함
+- 오늘은 샌드박스 기능에 대해 얘기해 보려고 함
 -->
 
 ---
@@ -971,9 +996,11 @@ AI 에이전트는 <em>내 권한으로</em>,<br>
 <!--
 발표자 노트 · 01:00–02:00 · 1분
 
-AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수정하고, 패키지를 설치하고, 셸 명령을 실행하고, 네트워크에 접속합니다.
-문제는 에이전트가 가진 능력 자체보다 그 능력이 우리 노트북의 권한과 직접 연결된다는 점입니다.
-오늘의 질문은 '에이전트를 신뢰할 수 있는지'가 아니라 '잘못된 행동의 영향 범위를 어디까지 허용할지'입니다.
+- GHCP가 처음 나왔을 때는 코드를 제안하는 수준이었음
+- 이제는 직접 파일을 수정하고, 패키지 설치하고, 셸 명령 실행하고, 네트워크에 접속함
+- 점점 코딩 에이전트의 성능이 올라가면서 내 PC의 권한을 마음대로 부릴 수 있게 됨
+- 문제가 생길 수 있는 여지가 충분히 있지만, 그렇다고 권한을 허용하지 않자니 제약이 너무 많음
+- 권한을 허용할 경우 문제가 생긴다면, 문제가 생길 수 있는 범위를 어디까지 허용해야 할까?
 -->
 
 ---
@@ -987,7 +1014,7 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 02:00–02:10 · 10초
 
-먼저 AI 코딩 에이전트가 로컬 환경에서 만들 수 있는 위험과 이를 통제하기 위해 필요한 경계를 살펴봅니다.
+- 로컬 개발 환경에서 코딩 에이전트가 만들어 낼 수 있는 위험 요소와 이를 통제하기 위한 경계는 어떤 것들이 있을까?
 -->
 
 ---
@@ -1004,12 +1031,13 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 02:10–04:10 · 2분
 
-위협을 다섯 가지로 묶어 보겠습니다.
-첫째는 파일 손상입니다. 에이전트가 잘못된 경로를 대상으로 명령을 실행할 수 있습니다.
-둘째는 자격 증명입니다. 환경 변수나 설정 파일에 있는 토큰을 읽을 수 있습니다.
-셋째는 네트워크를 통한 정보 유출, 넷째는 악성 의존성 설치와 공급망 공격입니다.
-마지막으로 Docker 소켓처럼 강력한 로컬 인터페이스에 접근하면 사실상 호스트 전체를 제어할 수 있습니다.
-이 위협 모델은 데모에서 무엇을 관찰해야 하는지 정하는 기준이 됩니다.
+- 다섯 가지 정도로 봄
+- 원하지 않는 파일을 건드릴 수 있음
+- 환경 변수라든가 설정 파일에 있는 토큰을 읽을 수 있음
+- 연결된 네트워크를 통해 정보가 유출될 수 있음
+- 공급망 공격을 통한 악성 패키지 설치
+- 도커 소켓을 통해 호스트를 장악할 수 있는 가능성
+- 그렇다면 이 위험 요소를 통제하면 되지 않을까?
 -->
 
 ---
@@ -1029,9 +1057,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 04:10–04:40 · 30초
 
-이 문제를 해결하려고 에이전트의 권한을 모두 제거하면 실제 작업을 수행할 수 없습니다.
-그래서 필요한 것이 Docker 샌드박스입니다.
-에이전트는 microVM 안에서 필요한 권한을 유지하지만, 호스트와 공유하지 않은 파일과 자원에는 접근하지 못하도록 실행 경계를 분리합니다.
+- 이 위험 요소를 통제하기 위해 에이전트의 권한을 제거하면 작업을 할 수가 없음
+- 그래서 나온 것이 바로 도커 샌드박스임
+- 에이전트는 microVM 안에서 필요한 모든 권한을 유지함
+- 동시에 호스트에서 공유하지 않은 파일과 자원에는 접근할 수 없음
 -->
 
 ---
@@ -1048,11 +1077,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 04:40–06:00 · 1분 20초
 
-샌드박스는 단순히 컨테이너를 하나 띄우는 이야기가 아닙니다.
-컴퓨트, 파일, 네트워크, 자격 증명, 수명주기라는 다섯 경계를 함께 설계해야 합니다.
-에이전트는 샌드박스 내부에서는 sudo를 포함한 충분한 권한을 가질 수 있습니다.
-대신 호스트 파일, 네트워크 목적지, 비밀 값, 실행 환경의 생명주기는 샌드박스 밖의 정책이 강제합니다.
-이것이 자율성과 통제를 동시에 얻는 핵심 패턴입니다.
+- 샌드박스는 단순한 컨테이너라기 보다는 하나의 VM임
+- 그 안에서 에이전트는 sudo 권한을 포함해서 충분한 권한을 가질 수 있음
+- 대신 호스트 파일에 접근하지 못하고, 네트워크 접근 권한이 제한적이고, 시크릿 값은 호스트에서 프록시로 제공하고, 샌드박스의 라이프사이클은 호스트에서 관리함
+- 이런 식으로 자율성과 통제를 동시에 구현할 수 있음
 -->
 
 ---
@@ -1075,11 +1103,10 @@ AI 코딩 에이전트는 코드를 제안하는 수준을 넘어 파일을 수�
 <!--
 발표자 노트 · 06:00–07:30 · 1분 30초
 
-Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
-에이전트는 VM 안에서 높은 권한을 가지지만 호스트와 커널, 메모리, 프로세스를 공유하지 않습니다.
-호스트 Docker 데몬도 직접 접근할 수 없고, 샌드박스 내부에 별도의 Docker Engine이 있습니다.
-경계를 통과하는 것은 명시적으로 공유한 워크스페이스, 호스트 프록시를 통한 네트워크 요청, 프록시가 주입하는 자격 증명입니다.
-중요한 점은 '아무것도 할 수 없습니다'가 아니라 '정해진 통로로만 실행합니다'라는 것입니다.
+- 샌드박스의 기본 경계는 microVM임
+- 이 안에서 높은 권한을 가지지만 호스트가 공유하기 전에는 호스트에 접근할 수 없음
+- 호스트의 도커 엔진에 접근 못함. 샌드박스 내부의 도커 엔진을 쓸 수 있음
+- 즉, 샌드박스 안에서는 정해진 경로로만 외부와 소통한다는 것
 -->
 
 ---
@@ -1109,11 +1136,10 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!--
 발표자 노트 · 07:30–09:00 · 1분 30초
 
-여기가 오늘 발표에서 가장 중요한 기술적 보정입니다.
-기본 Direct 모드는 프로젝트 디렉터리를 읽기·쓰기로 공유하므로, 에이전트가 수정한 파일은 호스트에서 즉시 보입니다.
-호스트 운영체제는 격리되지만 작업 트리는 격리되지 않습니다.
-코드 변경까지 분리하려면 Clone 모드를 사용해야 합니다.
-데모는 반드시 Clone 모드로 진행하고, 마지막에 diff를 검토한 뒤 반영하는 흐름을 보여주겠습니다.
+- 도커 샌드박스에서 제공하는 코드 접근 원칙이 두 가지가 있음
+- 다이렉트 모드와 클론 모드가 둘 다 장단점이 있음
+- 다이렉트 모드의 경우 호스트와 프로젝트를 공유함. 빠른 반영이 가능함. 대신 격리 수준이 낮음
+- 클론 모드의 경우 호스트와 프로젝트를 공유하지 않음. 코드 변경 사항은 PR로 처리해야 함. 높은 수준으로 격리가 가능함
 -->
 
 ---
@@ -1122,17 +1148,20 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!-- _paginate: false -->
 
 <div class="demo-kicker">DEMO #1</div>
-<div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div>
+<!-- <div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div> -->
+<div class="demo-name">Docker 샌드박스에서<br>.NET 앱 현대화하기</div>
 
 <!--
 발표자 노트 · 09:00–09:10 · 10초
 
-첫 번째 데모에서는 Docker 샌드박스 안에서 GitHub Copilot CLI와 앱 현대화 플러그인을 사용해 Java 애플리케이션을 현대화합니다.
+- 그럼 첫번째 데모를 보쟈
+- 도커 샌드박스 안에서 GHCP CLI와 앱 현대화 플러그인을 통해 앱을 현대화 해 보쟈
 -->
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <ul class="checklist">
   <li>GitHub Copilot CLI를 Docker 샌드박스에서 실행합니다</li>
   <li>GitHub Copilot modernization 플러그인을 설치합니다</li>
@@ -1144,21 +1173,25 @@ Docker 샌드박스의 기본 신뢰 경계는 microVM입니다.
 <!--
 발표자 노트 · 09:10–09:50 · 40초
 
-첫 번째 데모에서 보여줄 포인트를 먼저 합의하겠습니다.
-먼저 샌드박스 안에 GitHub Copilot modernization 플러그인을 설치하고 전용 modernize 에이전트를 선택합니다.
-이 에이전트는 Java 애플리케이션을 진단하고, 실행 가능한 계획을 만든 뒤, 전문 실행 에이전트에 작업을 배분합니다.
-목표는 단순한 코드 생성을 보여주는 것이 아니라 전문 에이전트의 오케스트레이션이 샌드박스 경계 안에서 동작하는 모습을 확인하는 것입니다.
+- 이번 데모에서는 이런 것들을 보여줄 거임
+- 앱 현대화 자체를 하는 것도 중요하지만, 이게 샌드박스 안에서만 동작하는 것을 보는게 중요함
 -->
 
 ---
 
 <!-- _class: auth-command-slide -->
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+<!-- ```bash
+sbx secret set github --command 'gh auth token'
+sbx run --clone --name java-appmod copilot .
+sbx exec -it java-appmod bash
+``` -->
 ```bash
 sbx secret set github --command 'gh auth token'
-sbx run --clone --name java-modernize copilot .
-sbx exec -it java-modernize bash
+sbx run --clone --name dotnet-appmod copilot .
+sbx exec -it dotnet-appmod bash
 ```
 
 <div class="flow">
@@ -1172,36 +1205,37 @@ sbx exec -it java-modernize bash
 <!--
 발표자 노트 · 09:50–11:10 · 1분 20초
 
-먼저 GitHub 토큰을 샌드박스 내부에 복사하지 않고 호스트 측 비밀 저장소에 등록합니다.
-sbx run 명령으로 Copilot 템플릿을 사용하는 java-modernize 샌드박스를 Clone 모드로 생성하고 GitHub Copilot CLI를 바로 실행합니다.
-원본 저장소는 읽기 전용으로 연결되고, 에이전트는 microVM 내부의 비공개 복제본에서 작업합니다.
-플러그인을 설치하거나 내부 상태를 확인할 때는 별도 터미널에서 sbx exec 명령으로 같은 샌드박스의 셸에 접속합니다.
+- 깃헙 토큰을 호스트의 시크릿으로 저장함
+- 그 다음에 샌드박스를 하나 클론 모드로 열면서 곧바로 GHCP CLI를 실행함
+- 또는 sbx exec 명령어를 통해 샌드박스의 bash 셸로 들어감
 -->
 
 ---
 
 <!-- _class: plugin-command-slide -->
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <pre><code><span class="cli-command">/plugin</span> <span class="cli-keyword">marketplace</span> <span class="cli-keyword">add</span> <span class="cli-value">microsoft/github-copilot-modernization</span>
 <span class="cli-command">/plugin</span> <span class="cli-keyword">install</span> <span class="cli-value">github-copilot-modernization@github-copilot-modernization</span></code></pre>
 
 <!--
 발표자 노트 · 11:10–12:10 · 1분
 
-앞 페이지의 sbx run 명령으로 진입한 GitHub Copilot CLI 화면에서 플러그인 설치를 진행합니다.
-첫 번째 슬래시 명령으로 Microsoft의 GitHub Copilot modernization 마켓플레이스를 추가하고, 두 번째 슬래시 명령으로 플러그인을 설치합니다.
-설치 후 Copilot CLI에서 /plugin list를 실행하면 github-copilot-modernization 플러그인을 확인할 수 있습니다.
-플러그인 설치 과정의 네트워크 요청이 샌드박스 정책을 통과하는지도 함께 확인합니다.
+- 플러그인 설치
+- 플러그인 설치 중 관련 MCP 서버도 함께 설치
+- MCP 실행 실패는 샌드박스의 환경 설정 때문인 것 보여줌
 -->
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
 <div class="agent-select"><code>copilot</code> → <code>/agent</code> → <strong>github-copilot-modernization:modernize</strong></div>
 
 <div class="flow">
-  <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div>
+  <!-- <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div> -->
+  <div class="node"><b>Assessment</b><span>의존성·.NET·위험 분석</span></div>
   <div class="arrow">→</div>
   <div class="node"><b>Planning</b><span>실행 가능한 작업 계획</span></div>
   <div class="arrow">→</div>
@@ -1217,28 +1251,26 @@ sbx run 명령으로 Copilot 템플릿을 사용하는 java-modernize 샌드박�
 <!--
 발표자 노트 · 12:10–13:40 · 1분 30초
 
-샌드박스 셸에서 copilot 명령으로 GitHub Copilot CLI를 실행합니다.
-Copilot CLI 안에서 /agent를 실행하고 github-copilot-modernization:modernize 에이전트를 선택합니다.
-이 에이전트는 요청을 Assessment, Planning, Execution의 세 단계로 오케스트레이션합니다.
-Assessment 단계에서는 Java 버전, 프레임워크, 의존성과 위험을 분석하고 .github/modernize/assessment에 결과를 저장합니다.
-Planning 단계에서는 plan.md와 tasks.json을 생성하며, Execution 단계에서는 전문 실행 에이전트가 작업을 수행하고 작업별 커밋을 남깁니다.
-이 구조 덕분에 관객은 단일 프롬프트 뒤에서 어떤 단계와 산출물이 만들어지는지 확인할 수 있습니다.
+- /agent 실행 후 github-copilot-modernization:modernize 선택
+- 현대화 에이전트는 알아서 Assessment, Planning, Execution 단계를 진행함
+- 이미 GHCP는 --allow-all 옵션을 자동으로 적용시켜 놨기 때문에 맨 마지막에 진행할까요? 정도만 남겨두고 알아서 진행함
 -->
 
 ---
 
-## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
-<div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div>
+<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
+## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+<!-- <div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div> -->
+<div class="prompt-box">이 앱을 .NET 10으로 현대화 해줘</div>
 
 <!--
 발표자 노트 · 13:40–17:00 · 3분 20초
 
-modernize 에이전트를 선택한 뒤 자연어로 구체적인 목표를 전달합니다.
-광범위하게 '이 애플리케이션을 현대화해 줘'라고 요청하면 진단부터 전체 파이프라인을 실행합니다.
-여기서는 Java 21과 Spring Boot 4.1 업그레이드라는 구체적인 작업을 요청해 계획과 실행에 집중합니다.
-자율 실행이 필요하면 Copilot CLI를 --allow-all 옵션으로 시작할 수 있지만, 샌드박스의 네트워크와 파일 경계는 외부에서 계속 적용됩니다.
-완료되면 변경된 코드, 빌드 결과, 취약점 검사, 작업별 커밋과 Git hooks를 검토합니다.
-시간이 지연되면 미리 녹화한 결과 화면으로 즉시 전환합니다.
+- 프롬프트 실행
+- 화면처럼 얘기할 수도 있고, 아예 "해줘!" 라고 해도 됨
+- 여기서는 .NET 10으로 현대화 해달라고 했음
+- 여기서는 Java 21과 Spring Boot 4.1로 현대화 해달라고 했음
+- 시간이 오래 걸리므로 우선 여기까지 진행하는 것 보여주고 다음으로 넘어감
 -->
 
 ---
@@ -1257,10 +1289,10 @@ modernize 에이전트를 선택한 뒤 자연어로 구체적인 목표를 전�
 <!--
 발표자 노트 · 17:00–17:30 · 30초
 
-Docker 샌드박스는 개발자 로컬 워크플로에 매우 잘 맞습니다.
-하지만 제품 기능으로 에이전트를 제공하거나 팀 단위로 많은 작업을 동시에 실행하려면 노트북을 운영 기반으로 사용할 수 없습니다.
-이때 필요한 것은 원격 격리, 자동화 가능한 수명주기, 대규모 동시 실행입니다.
-ACA 샌드박스는 Docker 샌드박스의 단순한 클라우드 복사판이 아니라 이 운영 문제를 다루는 별도의 모델입니다.
+- 지금까지 도커 샌드박스 안에서 GHCP CLI로 앱 현대화 하는 과정을 보여줬음
+- 이번에는 팀 단위로 많은 작업을 동시에 실행시켜야 한다면? 그땐 개발자 개인 PC에 의존할 수 없음
+- 이때부터는 클라우드에 올라간 샌드박스를 고려해야 함
+- ACA 샌드박스가 이 문제를 해결할 수 있음
 -->
 
 ---
@@ -1274,7 +1306,7 @@ ACA 샌드박스는 Docker 샌드박스의 단순한 클라우드 복사판이 �
 <!--
 발표자 노트 · 17:30–17:40 · 10초
 
-이제 로컬 개발 환경의 격리를 넘어 팀과 서비스 규모에서 샌드박스를 운영하는 방법을 살펴봅니다.
+- 로컬 개발환경 격리를 넘어, 클라우드 규모에서 샌드박스를 운영해 보쟈
 -->
 
 ---
@@ -1295,19 +1327,19 @@ ACA 샌드박스는 Docker 샌드박스의 단순한 클라우드 복사판이 �
 <!--
 발표자 노트 · 17:40–19:00 · 1분 20초
 
-ACA 샌드박스는 샌드박스 그룹 아래에 생성하는 일급 Azure 리소스입니다.
-Portal, CLI, SDK, Bicep, Skills를 통해 샌드박스를 생성하고 관리할 수 있으며, 이 발표의 데모는 ACA CLI를 사용합니다.
-각 샌드박스는 격리된 실행 환경이며 OCI 이미지를 루트 파일시스템으로 사용할 수 있습니다.
-중요한 차이는 상태를 메모리와 디스크 스냅샷으로 보존한 채 suspend하고, 이후 resume할 수 있다는 점입니다.
-현재 미리 보기 기능이므로 CLI와 SDK의 호환성 변경 가능성도 발표에서 분명히 밝힙니다.
+- ACA 샌드박스는 컨테이너 앱 기반의 리소스임. 현재 프리뷰 상태
+- 포탈, CLI, 파이썬 SDK, Skills 등으로 샌드박스를 생성하고 관리할 수 있음
+- 오늘은 ACA CLI를 사용할 거임
+- 각각의 샌드박스는 격리된 실행환경이고 도커에서 제공하는 컨테이너 이미지를 루트 파일 시스템으로 사용함
+- 샌드박스마다 스냅샷을 제공해서 사용하지 않을 경우에는 컨테이너를 멈추고 필요한 경우 다시 실행시킬 수 있음
 -->
 
 ---
 
 <div class="grid-3 value-grid">
   <div class="card"><div class="icon">&lt; 1s</div><b>빠른 시작</b><p>사전 준비 풀을 활용한 sub-second 프로비저닝</p></div>
-  <div class="card"><div class="icon">♾️</div><b>대규모 확장</b><p>Zero-to-Scale · 0에서 수천 개의 동시 샌드박스로 확장</p></div>
-  <div class="card"><div class="icon">⏸️ ▶️</div><b>Suspend / Resume</b><p>유휴 시 상태를 보존하고 빠르게 재개</p></div>
+  <div class="card"><div class="icon infinity-icon">&#x221E;</div><b>대규모 확장</b><p>Zero-to-Scale · 0에서 수천 개의 동시 샌드박스로 확장</p></div>
+  <div class="card"><div class="icon">&#x23F8;&#xFE0E; &#x25B6;&#xFE0E;</div><b>Suspend / Resume</b><p>유휴 시 상태를 보존하고 빠르게 재개</p></div>
   <div class="card"><div class="icon">ID</div><b>Azure 거버넌스</b><p>Entra ID, RBAC, Azure 리소스 경계</p></div>
   <div class="card"><div class="icon">VNet</div><b>네트워크</b><p>수신·송신 정책과 가상 네트워크 통합</p></div>
   <div class="card"><div class="icon">OCI</div><b>사용자 이미지</b><p>준비된 도구 체인을 루트 파일시스템으로 사용</p></div>
@@ -1316,11 +1348,10 @@ Portal, CLI, SDK, Bicep, Skills를 통해 샌드박스를 생성하고 관리할
 <!--
 발표자 노트 · 19:00–20:20 · 1분 20초
 
-ACA가 더하는 가치는 여섯 가지입니다.
-빠른 시작, 수천 단위 확장, suspend와 resume, Azure 거버넌스, 네트워크 통제, 사용자 OCI 이미지입니다.
-이 기능들은 단일 개발자 경험보다 서비스 운영과 멀티테넌트 실행에 초점이 있습니다.
-중지 상태에서는 CPU와 메모리 비용이 발생하지 않지만, 저장된 상태나 관련 리소스 비용은 별도로 확인해야 합니다.
-또한 샌드박스를 생성·관리하는 사용자에게는 Container Apps SandboxGroup Data Owner 역할이 필요합니다.
+- 로컬에서 돌아가는 도커 샌드박스에 더해 이런 장점이 있음
+- 빠른 시작, 스케일링, 스냅샷, 클라우드 거버넌스, 네트워크 통제, 커스텀 OCI 이미지
+- 중지상태에서는 스냅샷 저장 공간을 제외한 나머지 비용이 발생하지 않음
+- 샌드박스 사용자는 별도의 RBAC 권한이 필요함
 -->
 
 ---
@@ -1334,7 +1365,7 @@ ACA가 더하는 가치는 여섯 가지입니다.
 <!--
 발표자 노트 · 20:20–20:30 · 10초
 
-두 번째 데모에서는 ACA 샌드박스를 생성하고 원격에서 Copilot CLI를 실행한 뒤 Suspend와 Resume까지 확인합니다.
+- 쟈 그러면 두번째 데모를 한 번 볼까?
 -->
 
 ---
@@ -1354,7 +1385,7 @@ ACA가 더하는 가치는 여섯 가지입니다.
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox create</span> \
   --disk <span class="aca-value">copilot</span> \
   --credential <span class="aca-value">&lt;copilot-credential-id&gt;</span> \
-  --label <span class="aca-value">name=copilot-demo</span></code></pre>
+  --label <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
 </div>
 
@@ -1367,12 +1398,10 @@ ACA가 더하는 가치는 여섯 가지입니다.
 <!--
 발표자 노트 · 20:30–21:30 · 1분
 
-먼저 aca sandboxgroup create 명령으로 샌드박스 그룹을 만들고 --set-config 옵션으로 이후 명령에 사용할 기본 구성을 저장합니다.
-샌드박스 그룹을 생성하거나 수정하려면 Container Apps SandboxGroup Contributor 역할이 필요합니다.
-이어서 aca sandbox create 명령으로 GitHub Copilot CLI가 포함된 공개 copilot 디스크 이미지를 사용하는 샌드박스를 생성합니다.
-사전에 만든 GitHub Copilot 자격 증명 ID를 --credential 옵션으로 연결해 Copilot CLI가 인증된 상태로 시작되도록 합니다.
-그룹 내부의 샌드박스와 이미지 같은 데이터 영역 작업에는 Container Apps SandboxGroup Data Owner 역할이 필요합니다.
-반환된 샌드박스 ID와 Running 상태를 확인한 뒤 다음 단계에서 Copilot CLI를 실행합니다.
+- aca sandboxgroup create 명령으로 샌드박스 그룹 생성 - 모든 샌드박스가 여기서 돌아감
+- aca sandbox create 명령으로 샌드박스 생성
+- 샌드박스 안으로 들어가서 로그인해도 되지만, 그 전에 GitHub PAT 활용해서 사전에 로그인할 수 있음
+- 이후 샌드박스 안으로 들어가면 됨
 -->
 
 ---
@@ -1381,11 +1410,11 @@ ACA가 더하는 가치는 여섯 가지입니다.
 
 ## 데모 #2: ACA 샌드박스에서 Copilot CLI 활용하기
 
-<pre><code><span class="shell-prompt">$</span> <span class="shell-command">aca sandbox shell</span> <span class="shell-value">-l name=copilot-demo</span>
+<pre><code><span class="shell-prompt">$</span> <span class="shell-command">aca sandbox shell</span> <span class="shell-value">-l name=ghcp-demo</span>
 
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">git clone</span> <span class="shell-url">https://github.com/OWNER/REPO.git</span>
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">cd</span> <span class="shell-value">REPO</span>
-<span class="shell-prompt">copilot-demo$</span> <span class="shell-command">copilot</span></code></pre>
+<span class="shell-prompt">workspaces$</span> <span class="shell-command">git clone</span> <span class="shell-url">https://github.com/devkimchi/battle-school-lunch.git</span>
+<span class="shell-prompt">workspaces$</span> <span class="shell-command">cd</span> <span class="shell-value">battle-school-lunch</span>
+<span class="shell-prompt">workspaces$</span> <span class="shell-command">copilot</span></code></pre>
 
 <div class="creation-result">
   <b>Clone</b><span class="arrow">→</span>
@@ -1396,10 +1425,8 @@ ACA가 더하는 가치는 여섯 가지입니다.
 <!--
 발표자 노트 · 21:30–22:30 · 1분
 
-aca sandbox shell 명령으로 생성한 샌드박스의 대화형 셸에 접속합니다.
-샌드박스 안에서 GitHub 저장소를 복제하고 작업 디렉터리로 이동한 뒤 Copilot CLI를 실행합니다.
-비공개 저장소는 Contents 읽기 권한이 있는 별도 GitHub 자격 증명이 필요하며, github.com에 대한 egress 정책도 허용해야 합니다.
-데모에서는 인증과 네트워크 정책을 미리 구성해 명령 흐름에 집중합니다.
+- aca sandbox shell 명령어로 샌드박스에 접속
+- 깃헙 리포 클론, GHCP CLI 실행
 -->
 
 ---
@@ -1411,9 +1438,7 @@ aca sandbox shell 명령으로 생성한 샌드박스의 대화형 셸에 접속
 <!--
 발표자 노트 · 22:30–23:30 · 1분
 
-Copilot CLI가 시작되면 실제 코드 수정 대신 변경 계획만 작성하도록 요청합니다.
-프롬프트는 Web UI를 Brutal Design 스타일로 바꾸는 계획을 design-update.md 파일에 저장하도록 지시합니다.
-생성된 파일은 다음 슬라이드에서 Suspend와 Resume 이후에도 작업 상태가 유지되는지 확인하는 기준으로 사용합니다.
+- 프롬프트 실행
 -->
 
 ---
@@ -1424,12 +1449,12 @@ Copilot CLI가 시작되면 실제 코드 수정 대신 변경 계획만 작성�
   <div class="aca-command-card">
     <h3>1 · Suspend</h3>
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox stop</span> \
-  -l <span class="aca-value">name=copilot-demo</span></code></pre>
+  -l <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
   <div class="aca-command-card">
     <h3>2 · Resume</h3>
     <pre><code><span class="aca-cli">aca</span> <span class="aca-keyword">sandbox resume</span> \
-  -l <span class="aca-value">name=copilot-demo</span></code></pre>
+  -l <span class="aca-value">name=ghcp-demo</span></code></pre>
   </div>
 </div>
 
@@ -1442,13 +1467,9 @@ Copilot CLI가 시작되면 실제 코드 수정 대신 변경 계획만 작성�
 <!--
 발표자 노트 · 23:30–24:30 · 1분
 
-ACA CLI에서는 aca sandbox stop 명령으로 샌드박스를 중지합니다.
-중지할 때 설정된 Suspend Mode에 따라 디스크 또는 메모리와 디스크 상태를 스냅샷으로 보존합니다.
-이 상태에서는 CPU와 메모리 컴퓨팅 비용이 발생하지 않으며, 필요할 때 빠르게 Resume할 수 있습니다.
-aca sandbox resume 명령으로 같은 샌드박스를 다시 실행합니다.
-재개한 뒤 동일한 샌드박스 ID와 작업 디렉터리를 확인하고, 앞에서 만든 design-update.md 파일이 유지되는지 검증합니다.
-Suspend는 단순한 프로세스 종료가 아니라 실행 컨텍스트를 보존하는 수명주기 기능입니다.
-이 기능은 긴 에이전트 작업의 대기 시간과 사용자 세션 사이의 유휴 비용을 줄이는 핵심 운영 가치입니다.
+- aca sandbox stop 명령어로 샌드박스 중단
+- aca sandbox resume 명령어로 다시 샌드박스 실행
+- design-update.md 파일 보이는지 확인
 -->
 
 ---
@@ -1462,7 +1483,7 @@ Suspend는 단순한 프로세스 종료가 아니라 실행 컨텍스트를 보
 <!--
 발표자 노트 · 24:30–24:40 · 10초
 
-마지막으로 Docker 샌드박스와 ACA 샌드박스의 선택 기준을 비교하고 샌드박스를 사용해도 남는 위험을 정리합니다.
+- 하지만 과연 샌드박스가 보안 관점에서 만능칼일까? 여전히 조심해야 할 부분이 있음
 -->
 
 ---
@@ -1480,11 +1501,8 @@ Suspend는 단순한 프로세스 종료가 아니라 실행 컨텍스트를 보
 <!--
 발표자 노트 · 24:40–25:40 · 1분
 
-두 제품을 우열로 비교하지 않고 선택 기준으로 정리합니다.
-로컬에서 개발자가 에이전트를 안전하게 사용하려면 Docker 샌드박스가 자연스럽습니다.
-서비스에서 사용자별 또는 작업별 실행 환경을 동적으로 제공하려면 ACA 샌드박스가 맞습니다.
-Docker에도 조직 정책 기능이 있으므로 '중앙 거버넌스가 없습니다'라고 단정하지 않습니다.
-핵심 차이는 실행 위치와 자동화 가능한 수명주기, 그리고 동시성의 규모입니다.
+- 로컬에서 개발자가 에이전트를 안전하게 사용하려면 Docker 샌드박스가 자연스러움
+- 원격에서 동적으로 샌드박스 기능을 여러개 동시다발적으로 돌리려면 ACA 샌드박스가 자연스러움
 -->
 
 ---
@@ -1500,10 +1518,10 @@ Docker에도 조직 정책 기능이 있으므로 '중앙 거버넌스가 없습
 <!--
 발표자 노트 · 25:40–26:40 · 1분
 
-두 제품 모두 샌드박스 경계 밖으로 연결되는 통로가 있으므로 공통 위험이 남습니다.
-허용된 네트워크와 자격 증명은 정보 유출과 권한 오용의 경로가 될 수 있습니다.
-패키지와 이미지의 공급망, 에이전트가 만든 코드와 설정, 외부 MCP 서버와 Skills도 별도로 신뢰하고 검토해야 합니다.
-샌드박스는 이 위험을 없애기보다 영향을 받을 수 있는 범위를 제한합니다.
+- 여전히 위험요소는 남아있음
+- 네트워크, 토큰 등은 정보 유출 및 권한 오남용의 경로가 될 수 있음
+- 서플라이 체인 어택, 플러그인, 설치 스크립트 등 별도로 검토해야 함
+- 샌드박스는 이런 영향을 받을 수 있는 범위를 제한함
 -->
 
 ---
@@ -1525,9 +1543,9 @@ Docker에도 조직 정책 기능이 있으므로 '중앙 거버넌스가 없습
 <!--
 발표자 노트 · 26:40–27:40 · 1분
 
-Docker 샌드박스에서는 Direct 모드의 호스트 파일 변경과 microVM 밖에서 실행되는 로컬 MCP, 공유 Skills를 주의해야 합니다.
-ACA 샌드박스에서는 Contributor와 Data Owner의 RBAC 범위, 멀티테넌트 사용자와 샌드박스 매핑을 정확히 통제해야 합니다.
-또한 Snapshot과 Volume은 작업 상태를 보존하는 장점이 있지만 민감한 데이터의 잔존 경로가 될 수 있으므로 수명주기와 삭제 정책이 필요합니다.
+- 도커 샌드박스에서는 Direct 모드 사용시 조심할 것, 샌드 박스 밖에서 실행되는 로컬 MCP, 공유 스킬 등을 조심해야 함
+- ACA 샌드박스에서는 RBAC 권한 등을 정확하게 통제해야 함
+- 스냅샷은 작업 상태를 보존해 준다는 장점도 있지만, 결국 데이터가 남아있으니 라이프사이클 관리에 조심해야 함
 -->
 
 ---
@@ -1544,8 +1562,8 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
 <!--
 발표자 노트 · 27:40–28:00 · 20초
 
-따라서 샌드박스는 GitHub Copilot과 같은 AI 코딩 에이전트를 무조건 안전하게 만들어 주거나 신뢰와 검토를 대체하는 장치가 아닙니다.
-에이전트가 실패하거나 공격받았을 때 영향을 받을 수 있는 범위를 최소화하는 방어 계층에 가깝습니다.
+- 따라서, 샌드박스는 GHCP 같은 AI 코딩 에이전트를 무조건 안전하게 만들어주거나 하는 장치가 아님
+- 오히려 무슨 문제가 생겼을 경우 피해를 최소하 시켜주는 방어 계층임
 -->
 
 ---
@@ -1558,11 +1576,10 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
 <!--
 발표자 노트 · 28:00–29:00 · 1분
 
-오늘의 결론은 세 문장입니다.
-첫째, 에이전트에게 일할 권한은 주되 실행 경계는 외부 정책으로 강제합니다.
-둘째, GitHub Copilot CLI를 개발자 PC에서 대화형으로 실행할 때는 Docker 샌드박스, 원격에서 자동화하거나 여러 작업을 동시에 실행할 때는 ACA 샌드박스를 선택합니다.
-셋째, 샌드박스는 에이전트를 완전히 신뢰하게 만드는 것이 아니라 실패의 피해 범위를 작고 관찰 가능하고 폐기 가능하게 만듭니다.
-감사합니다.
+- 오늘 세션 내용은 요렇게 세가지로 정리 가능함
+- 1. 에이전트에게 일할 권한은 주되 실행 경계는 외부 정책으로 강제
+- 2. GHCP CLI를 개발자 PC에서 대화형으로 실행할 때는 Docker 샌드박스, 원격에서 자동화하거나 여러 작업을 동시에 실행할 때는 ACA 샌드박스
+- 3. 샌드박스는 에이전트를 완전히 믿고 실행하는 대신 문제 발생시 피해 범위를 작고 관찰 가능하고 폐기 가능하게 만들어줌
 -->
 
 ---
@@ -1576,7 +1593,8 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
     <div class="source-card"><b>Docker 샌드박스에서 GitHub Copilot CLI 실행하기</b><a href="https://docs.docker.com/ai/sandboxes/agents/copilot/">docs.docker.com/ai/sandboxes/agents/copilot</a></div>
   </div>
   <div class="source-column">
-    <div class="source-card"><b>Copilot CLI로 Java 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmode/java">aka.ms/ghcp/appmode/java</a></div>
+    <div class="source-card"><b>Copilot CLI로 Java 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmod/java">aka.ms/ghcp/appmod/java</a></div>
+    <div class="source-card"><b>Copilot CLI로 .NET 앱 현대화하기</b><a href="https://aka.ms/ghcp/appmod/dotnet">aka.ms/ghcp/appmod/dotnet</a></div>
     <div class="source-card"><b>Azure Container Apps 샌드박스 소개</b><a href="https://aka.ms/aca/sandboxes">aka.ms/aca/sandboxes</a></div>
     <div class="source-card"><b>Azure Container Apps 샌드박스 문서</b><a href="https://sandboxes.azure.com/docs">sandboxes.azure.com/docs</a></div>
   </div>
@@ -1585,9 +1603,7 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
 <!--
 발표자 노트 · 29:00–29:20 · 20초
 
-질문을 받을 때 사용할 공식 문서 링크입니다.
-Docker 명령은 최신 sbx CLI를 기준으로 작성했습니다.
-ACA 샌드박스는 미리 보기 상태이므로 실제 발표 직전에 공식 문서와 CLI/SDK 예제를 다시 확인합니다.
+- 샌드박스와 관련해서 더욱 궁금하다면? 링크 찾아봐라
 -->
 
 ---
@@ -1599,6 +1615,10 @@ ACA 샌드박스는 미리 보기 상태이므로 실제 발표 직전에 공식
 
 <div class="closing-title">
 우분투에서 AI 에이전트 샌드박싱하기
+</div>
+
+<div class="closing-links">
+  <a href="https://devkimchi.com/github-copilot-sandbox">devkimchi.com/github-copilot-sandbox</a>
 </div>
 
 <div class="closing-speaker">
@@ -1613,7 +1633,5 @@ ACA 샌드박스는 미리 보기 상태이므로 실제 발표 직전에 공식
 <!--
 발표자 노트 · 29:20–30:00 · 40초
 
-경청해 주셔서 감사합니다.
-질문이 있으시면 편하게 말씀해 주세요.
-발표 자료와 추가 정보는 GitHub와 LinkedIn의 @justinyoo 계정에서 확인할 수 있습니다.
+- 땡큐베리감사!
 -->
