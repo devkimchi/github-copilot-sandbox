@@ -1130,8 +1130,8 @@ AI 에이전트는 <em>내 권한으로</em>,<br>
 <!-- _paginate: false -->
 
 <div class="demo-kicker">DEMO #1</div>
-<!-- <div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div> -->
-<div class="demo-name">Docker 샌드박스에서<br>.NET 앱 현대화하기</div>
+<div class="demo-name">Docker 샌드박스에서<br>Java 앱 현대화하기</div>
+<!-- <div class="demo-name">Docker 샌드박스에서<br>.NET 앱 현대화하기</div> -->
 
 <!--
 발표자 노트 · 09:00–09:10 · 10초
@@ -1142,8 +1142,8 @@ AI 에이전트는 <em>내 권한으로</em>,<br>
 
 ---
 
-<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
-## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기 -->
 <ul class="checklist">
   <li>GitHub Copilot CLI를 Docker 샌드박스에서 실행합니다</li>
   <li>GitHub Copilot modernization 플러그인을 설치합니다</li>
@@ -1163,18 +1163,18 @@ AI 에이전트는 <em>내 권한으로</em>,<br>
 
 <!-- _class: auth-command-slide -->
 
-<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
-## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
-<!-- ```bash
+## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기 -->
+```bash
 sbx secret set github --command 'gh auth token'
 sbx run --clone --name java-appmod copilot .
 sbx exec -it java-appmod bash
-``` -->
-```bash
+```
+<!-- ```bash
 sbx secret set github --command 'gh auth token'
 sbx run --clone --name dotnet-appmod copilot .
 sbx exec -it dotnet-appmod bash
-```
+``` -->
 
 <div class="flow">
   <div class="node"><b>Authenticate</b><span>호스트 프록시로 토큰 주입</span></div>
@@ -1196,8 +1196,8 @@ sbx exec -it dotnet-appmod bash
 
 <!-- _class: plugin-command-slide -->
 
-<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
-## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기 -->
 <pre><code><span class="cli-command">/plugin</span> <span class="cli-keyword">marketplace</span> <span class="cli-keyword">add</span> <span class="cli-value">microsoft/github-copilot-modernization</span>
 <span class="cli-command">/plugin</span> <span class="cli-keyword">install</span> <span class="cli-value">github-copilot-modernization@github-copilot-modernization</span></code></pre>
 
@@ -1211,13 +1211,13 @@ sbx exec -it dotnet-appmod bash
 
 ---
 
-<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
-## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
+## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기 -->
 <div class="agent-select"><code>copilot</code> → <code>/agent</code> → <strong>github-copilot-modernization:modernize</strong></div>
 
 <div class="flow">
-  <!-- <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div> -->
-  <div class="node"><b>Assessment</b><span>의존성·.NET·위험 분석</span></div>
+  <div class="node"><b>Assessment</b><span>의존성·Java·위험 분석</span></div>
+  <!-- <div class="node"><b>Assessment</b><span>의존성·.NET·위험 분석</span></div> -->
   <div class="arrow">→</div>
   <div class="node"><b>Planning</b><span>실행 가능한 작업 계획</span></div>
   <div class="arrow">→</div>
@@ -1240,10 +1240,11 @@ sbx exec -it dotnet-appmod bash
 
 ---
 
-<!-- ## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기 -->
-## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기
-<!-- <div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div> -->
-<div class="prompt-box">이 앱을 .NET 10으로 현대화 해줘</div>
+## 데모 #1: Docker 샌드박스에서 Java 앱 현대화하기
+<!-- ## 데모 #1: Docker 샌드박스에서 .NET 앱 현대화하기 -->
+<div class="prompt-box">이 앱을 현대화 해줘</div>
+<div class="prompt-box">이 앱을 Java 21과 Spring Boot 4.1로 업그레이드 해줘</div>
+<!-- <div class="prompt-box">이 앱을 .NET 10으로 현대화 해줘</div> -->
 
 <!--
 발표자 노트 · 13:40–17:00 · 3분 20초
