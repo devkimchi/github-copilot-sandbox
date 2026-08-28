@@ -30,12 +30,19 @@ jobs:
 
       - name: Validate Marp presentation
         run: |
-          mkdir -p site
+          mkdir -p site/ko site/en
           npx --yes @marp-team/marp-cli@4 \
-            ai-agent-sandboxing.md \
+            ai-agent-sandboxing-ko.md \
             --html \
             --allow-local-files \
-            -o site/index.html
+            -o site/ko/index.html
+          npx --yes @marp-team/marp-cli@4 \
+            ai-agent-sandboxing-en.md \
+            --html \
+            --allow-local-files \
+            -o site/en/index.html
+          cp index.html site/index.html
+          cp -R assets site/assets
           cp -R assets site/assets
 
       - name: Validate PowerShell syntax

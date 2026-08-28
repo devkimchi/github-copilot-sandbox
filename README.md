@@ -10,9 +10,10 @@ The primary presentation was prepared for various conferences and meetups, and c
 .
 ├── .github/
 ├── assets/
-├── ai-agent-sandboxing.md      # Marp presentation source
+├── ai-agent-sandboxing-ko.md   # Korean Marp presentation source
+├── ai-agent-sandboxing-en.md   # English Marp presentation source
 ├── docs/                       # Demo setup, runbooks, and recovery guides
-├── index.html                  # Generated presentation (ignored)
+├── index.html                  # Redirect to the Korean presentation
 ├── LICENSE
 └── README.md
 ```
@@ -29,29 +30,64 @@ The [demo documentation index](docs/README.md) provides two complete, sequential
 
 ## Preview the presentation
 
-1. Install Node.js 22 or later, then generate an HTML presentation:
+> [!NOTE]
+> To preview the presentation, you'll need 3 terminals.
+
+1. Install Node.js 22 or later
+
+1. Generate an HTML presentation for English in Terminal A:
 
     ```bash
     # zsh/bash
+    mkdir -p en/assets
+    cp -R assets/. en/assets/
     npx --yes @marp-team/marp-cli@4 \
       --watch \
-      ai-agent-sandboxing.md \
+      ai-agent-sandboxing-en.md \
       --html \
       --allow-local-files \
-      -o index.html
+      -o en/index.html
     ```
 
     ```powershell
     # PowerShell
+    New-Item -ItemType Directory -Force en/assets
+    Copy-Item -Recurse -Force assets/* en/assets/
     npx --yes @marp-team/marp-cli@4 `
       --watch `
-      ai-agent-sandboxing.md `
+      ai-agent-sandboxing-en.md `
       --html `
       --allow-local-files `
-      -o index.html
+      -o en/index.html
     ```
 
-1. Run local web server:
+1. Generate an HTML presentation for Korean in Terminal B:
+
+    ```bash
+    # zsh/bash
+    mkdir -p ko/assets
+    cp -R assets/. ko/assets/
+    npx --yes @marp-team/marp-cli@4 \
+      --watch \
+      ai-agent-sandboxing-ko.md \
+      --html \
+      --allow-local-files \
+      -o ko/index.html
+    ```
+
+    ```powershell
+    # PowerShell
+    New-Item -ItemType Directory -Force ko/assets
+    Copy-Item -Recurse -Force assets/* ko/assets/
+    npx --yes @marp-team/marp-cli@4 `
+      --watch `
+      ai-agent-sandboxing-ko.md `
+      --html `
+      --allow-local-files `
+      -o ko/index.html
+    ```
+
+1. Run local web server in Terminal C:
 
     ```bash
     npx serve .

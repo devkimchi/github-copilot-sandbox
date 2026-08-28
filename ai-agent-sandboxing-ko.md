@@ -4,6 +4,7 @@ theme: default
 size: 16:9
 # paginate: true
 # footer: AI 에이전트 샌드박싱
+header: '<a class="language-switch" href="../en/" onclick="this.href = this.getAttribute(&quot;href&quot;) + location.hash" lang="en">English</a>'
 ---
 
 <style>
@@ -63,6 +64,27 @@ footer {
   font-size: 12px;
   left: 68px;
   bottom: 20px;
+}
+
+header {
+  left: auto;
+  right: 28px;
+  top: 22px;
+  z-index: 10;
+}
+
+.language-switch {
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--cyan);
+  display: inline-block;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 9px 12px;
+  text-decoration: none;
 }
 
 h1, h2, h3 {
@@ -156,7 +178,7 @@ section.plugin-command-slide .cli-value {
 }
 
 section.opening {
-  background: url('assets/image-opening.jpg') center / cover no-repeat;
+  background: url('../assets/image-opening.jpg') center / cover no-repeat;
   border-left: none;
   justify-content: flex-start;
 }
@@ -603,7 +625,7 @@ section.statement-slide::after {
 }
 
 section.closing {
-  background: url('assets/image-closing.jpg') center / cover no-repeat;
+  background: url('../assets/image-closing.jpg') center / cover no-repeat;
   border-left: none;
   color: #ffffff;
   display: block;
@@ -703,7 +725,7 @@ section.closing::before {
 section.demo-divider {
   background:
     linear-gradient(90deg, rgba(44, 22, 55, .78), rgba(44, 22, 55, .32) 62%, transparent),
-    url('assets/image-demo.jpg') center / cover no-repeat;
+    url('../assets/image-demo.jpg') center / cover no-repeat;
   border-left: none;
   color: #ffffff;
   display: flex;
@@ -738,7 +760,7 @@ section.demo-divider::after {
 section.section-divider {
   background:
     linear-gradient(90deg, rgba(44, 22, 55, .68), rgba(44, 22, 55, .12) 68%, transparent),
-    url('assets/image-section.jpg') center / cover no-repeat;
+    url('../assets/image-section.jpg') center / cover no-repeat;
   border-left: none;
   color: #ffffff;
   display: flex;
@@ -970,8 +992,8 @@ Docker 샌드박스와 Azure Container Apps 샌드박스로 피해 범위 통제
   <span class="speaker-org">Microsoft / GitHub</span>
   <span class="speaker-captain">Docker Captain</span>
   <span class="speaker-social">
-    <span class="social-item"><img src="assets/icon-github.png" alt="GitHub"> @justinyoo</span>
-    <span class="social-item"><img src="assets/icon-linkedin.png" alt="LinkedIn"> @justinyoo</span>
+    <span class="social-item"><img src="../assets/icon-github.png" alt="GitHub"> @justinyoo</span>
+    <span class="social-item"><img src="../assets/icon-linkedin.png" alt="LinkedIn"> @justinyoo</span>
   </span>
 </div>
 
@@ -1626,8 +1648,8 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
   <span>수석 디벨로퍼 아드보캇</span><span>|</span>
   <span>Microsoft/GitHub</span><span>|</span>
   <span>Docker Captain</span><span>|</span>
-  <span class="closing-social"><img src="assets/icon-github.png" alt="GitHub"> @justinyoo</span><span>|</span>
-  <span class="closing-social"><img src="assets/icon-linkedin.png" alt="LinkedIn"> @justinyoo</span>
+  <span class="closing-social"><img src="../assets/icon-github.png" alt="GitHub"> @justinyoo</span><span>|</span>
+  <span class="closing-social"><img src="../assets/icon-linkedin.png" alt="LinkedIn"> @justinyoo</span>
 </div>
 
 <!--

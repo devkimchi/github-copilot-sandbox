@@ -21,13 +21,13 @@
 !.github/**
 
 # Presentation source and referenced assets.
-!ai-agent-sandboxing.md
+!ai-agent-sandboxing-*.md
 !assets/**
 !docs/
 !docs/**
 
-# Generated GitHub Pages entrypoint.
-index.html
+# GitHub Pages language redirect.
+!index.html
 
 # PowerShell scripts and modules.
 !*.ps1
