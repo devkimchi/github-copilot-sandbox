@@ -1,4 +1,4 @@
-# Demo 1 validation and recovery
+# Demo 1: Java validation and recovery
 
 Use this guide after the agent finishes, or when the live path needs recovery.
 
