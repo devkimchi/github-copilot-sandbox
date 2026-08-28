@@ -1,6 +1,6 @@
 # Demo 2: Copilot CLI in an ACA Sandbox
 
-This runbook follows the Demo 2 sequence in [`ai-agent-sandboxing.md`](../ai-agent-sandboxing.md). It runs GitHub Copilot CLI against
+This runbook follows the Demo 2 sequence in [`ai-agent-sandboxing-en.md`](../ai-agent-sandboxing-en.md). It runs GitHub Copilot CLI against
 [`devkimchi/battle-school-lunch`](https://github.com/devkimchi/battle-school-lunch) and proves that `design-update.md` survives a stop and resume cycle.
 
 > [!IMPORTANT]

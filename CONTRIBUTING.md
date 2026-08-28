@@ -1,37 +1,47 @@
 # Contributing
 
-Thank you for improving the presentation materials, demo scripts, and
-infrastructure definitions in this repository.
+Thank you for improving the presentation materials, demo scripts, and infrastructure definitions in this repository.
 
 ## Development prerequisites
 
 - Git
 - Node.js 22 or later for Marp rendering
-- PowerShell 7 for PowerShell scripts
-- Bash for shell scripts
+- PowerShell 7 for PowerShell scripts (Only for Windows users)
+- Bash for shell scripts (Only for non-Windows users)
 - Azure CLI with Bicep support for infrastructure validation
 
 ## Make a change
 
 1. Create a branch using `feat/`, `fix/`, or `docs/`.
-2. Keep generated HTML, PDF, PowerPoint, speaker-note exports, and previews
-   out of commits.
+2. Keep generated HTML, PDF, PowerPoint, speaker-note exports, and previews out of commits.
 3. Update `CHANGELOG.md` when a change affects users of the materials.
-4. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit
-   messages.
+4. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
 
 ## Validate presentation changes
 
 ```bash
+# For English
+mkdir -p en/assets
+cp -R assets/. en/assets/
 npx --yes @marp-team/marp-cli@4 \
-  ai-agent-sandboxing.md \
+   ai-agent-sandboxing-en.md \
   --html \
   --allow-local-files \
-  -o index.html
+   -o en/index.html
 ```
 
-Review the generated presentation for overflow, broken image links, and
-readability.
+```bash
+# For Korean
+mkdir -p ko/assets
+cp -R assets/. ko/assets/
+npx --yes @marp-team/marp-cli@4 \
+   ai-agent-sandboxing-ko.md \
+  --html \
+  --allow-local-files \
+   -o ko/index.html
+```
+
+Review the generated presentation for overflow, broken image links, and readability.
 
 ## Validate scripts
 

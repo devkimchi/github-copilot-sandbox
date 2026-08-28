@@ -1,6 +1,6 @@
 # Demo 1: .NET app modernization in a Docker Sandbox
 
-This runbook follows the Demo 1 sequence in [`ai-agent-sandboxing.md`](../ai-agent-sandboxing.md). Use two terminals: Terminal A for Copilot CLI and Terminal B for inspection.
+This runbook follows the Demo 1 sequence in [`ai-agent-sandboxing-en.md`](../ai-agent-sandboxing-en.md). Use two terminals: Terminal A for Copilot CLI and Terminal B for inspection.
 
 > [!IMPORTANT]
 > Run this demo in clone mode. Direct mode protects the host operating system, but it gives the agent read-write access to the host working tree.

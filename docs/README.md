@@ -1,6 +1,6 @@
 # AI agent sandboxing demo guides
 
-These documents support the live demos in [`ai-agent-sandboxing.md`](../ai-agent-sandboxing.md).
+These documents support the live demos in [`ai-agent-sandboxing-en.md`](../ai-agent-sandboxing-en.md).
 
 ## Demo 1: App modernization in a Docker Sandbox
 
