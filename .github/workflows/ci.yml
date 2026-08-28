@@ -42,8 +42,7 @@ jobs:
             --allow-local-files \
             -o site/en/index.html
           cp index.html site/index.html
-          cp -R assets site/ko/assets
-          cp -R assets site/en/assets
+          cp -R assets site/assets
 
       - name: Validate PowerShell syntax
         shell: pwsh
