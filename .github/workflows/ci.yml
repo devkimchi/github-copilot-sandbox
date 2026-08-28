@@ -30,7 +30,7 @@ jobs:
 
       - name: Validate Marp presentation
         run: |
-          mkdir -p site/ko site/en
+          mkdir -p site/ko site/en site/ubucon
           npx --yes @marp-team/marp-cli@4 \
             ai-agent-sandboxing-ko.md \
             --html \
@@ -41,6 +41,11 @@ jobs:
             --html \
             --allow-local-files \
             -o site/en/index.html
+          npx --yes @marp-team/marp-cli@4 \
+            ai-agent-sandboxing-ubucon.md \
+            --html \
+            --allow-local-files \
+            -o site/ubucon/index.html
           cp index.html site/index.html
           cp -R assets site/assets
 
