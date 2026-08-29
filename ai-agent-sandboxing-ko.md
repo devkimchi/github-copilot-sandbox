@@ -680,7 +680,7 @@ section.closing::before {
   position: absolute;
   right: 0;
   text-align: center;
-  top: 470px;
+  top: 450px;
 }
 
 .closing-links a {
@@ -1641,6 +1641,7 @@ GitHub Copilot과 같은 <strong>AI 코딩 에이전트</strong>의<br>
 
 <div class="closing-links">
   <a href="https://devkimchi.com/github-copilot-sandbox">devkimchi.com/github-copilot-sandbox</a>
+  <a href="https://github.com/devkimchi/github-copilot-sandbox">github.com/devkimchi/github-copilot-sandbox</a>
 </div>
 
 <div class="closing-speaker">
