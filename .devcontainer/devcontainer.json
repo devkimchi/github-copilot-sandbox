@@ -16,9 +16,9 @@
         "terminal.integrated.enablePersistentSessions": true,
         "workbench.startupEditor": "none",
         "workbench.secondarySideBar.defaultVisibility": "hidden",
-        "workbench.activityBar.location": "hidden",
+        "workbench.activityBar.location": "default",
         "workbench.statusBar.visible": false,
-        "workbench.editor.showTabs": "none"
+        "workbench.editor.showTabs": "multiple"
       }
     }
   }

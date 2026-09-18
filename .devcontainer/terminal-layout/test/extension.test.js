@@ -2,6 +2,15 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { activate } = require('../extension');
 
+test('keeps Codespaces menu access and editor terminal tabs without changing application-wide menu settings', () => {
+  const { settings } = require('../../devcontainer.json').customizations.vscode;
+  assert.equal(settings['workbench.activityBar.location'], 'default');
+  assert.equal(settings['workbench.editor.showTabs'], 'multiple');
+  assert.equal(settings['terminal.integrated.defaultLocation'], 'editor');
+  assert.equal(settings['workbench.secondarySideBar.defaultVisibility'], 'hidden');
+  assert.equal(settings['window.menuBarVisibility'], undefined);
+});
+
 function createHost({ enabled = true, folders = [{ uri: 'file:///workspaces/sandbox' }], terminals = [] } = {}) {
   const calls = [];
   const commands = new Map();

@@ -45,10 +45,14 @@ Codespaces; local ARM64 machines require emulation.
 On the first VS Code attachment, a small
 [repository-owned extension](.devcontainer/terminal-layout/README.md) is installed
 automatically. It opens a full-width editor terminal, hides both sidebars and the
-bottom panel, and focuses the shell. Container settings also hide the activity bar,
-status bar, and editor tabs. The normal editor UI may appear briefly while setup
-and extension activation finish. Browser tabs and the address bar remain visible;
-browser fullscreen requires a user gesture.
+bottom panel, and focuses the shell. Container settings keep the activity bar
+(including Codespaces' default compact menu button) and editor tabs visible, while
+hiding the status bar. Use **Terminal > New Terminal** from the menu to open more
+editor terminals and switch between them using their tabs. These settings do not
+change the browser profile's application-wide menu bar preference.
+The normal editor UI may appear briefly while setup and extension activation
+finish. Browser tabs and the address bar remain visible; browser fullscreen
+requires a user gesture.
 
 In the terminal, run:
 
@@ -60,14 +64,43 @@ copilot
 Complete Copilot's sign-in flow if prompted; a Copilot-enabled account and any
 required organization policy approval are still needed. No credentials are stored
 in this repository. The layout extension opens a shell, not an unattended Copilot
-session, and does not bypass Copilot's permission prompts.
+session.
+
+Container creation merges the following into the container user's
+`~/.copilot/config.json` (or `$COPILOT_HOME/config.json` when that variable is set),
+preserving other settings:
+
+```json
+{
+  "defaultPermissionMode": "allow-all"
+}
+```
+
+New interactive `copilot` sessions therefore start with all tool, path, and URL
+permissions enabled without approval prompts, subject to organization policy.
+This does not enable autopilot, bypass authentication, or change a resumed
+session's saved permissions. Non-interactive runs such as `copilot -p "..."` still
+need an explicit `--allow-all`. Run `copilot help config` for the installed
+version's permission-setting semantics.
+
+> [!WARNING]
+> Copilot can run destructive commands and access credentials available inside the
+> container without asking. Use only trusted repositories and disposable data.
+> To restore approval prompts for new sessions, change `defaultPermissionMode` to
+> `"manual"` in the container's config. Rebuilding or rerunning the setup reapplies
+> `"allow-all"`. The setup does not modify the host machine's Copilot config.
+
+To apply only this change in an already-running container, run:
+
+```bash
+node .devcontainer/configure-copilot.js "${COPILOT_HOME:-$HOME/.copilot}"
+```
 
 To reapply the layout, open the Command Palette with **F1** and run
 **Copilot Sandbox: Open Terminal Layout**. To return to a normal editor, set
-`copilotSandbox.terminalLayout.enabled` to `false` in workspace settings, set
-`workbench.activityBar.location` to `"default"`, `workbench.statusBar.visible` to
-`true`, and `workbench.editor.showTabs` to `"multiple"`. Then use **View: Toggle
-Primary Side Bar Visibility** and **View: Toggle Secondary Side Bar Visibility**
+`copilotSandbox.terminalLayout.enabled` to `false` and
+`workbench.statusBar.visible` to `true` in workspace settings. Then use
+**View: Toggle Primary Side Bar Visibility** and **View: Toggle Secondary Side Bar Visibility**
 as needed. These changes do not affect VS Code outside this container/workspace.
 
 If no terminal appears, inspect the Codespaces creation log for
