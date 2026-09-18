@@ -8,6 +8,7 @@ The primary presentation was prepared for various conferences and meetups, and c
 
 ```text
 .
+├── .devcontainer/              # Copilot CLI Codespaces environment and terminal layout
 ├── .github/
 ├── assets/
 ├── ai-agent-sandboxing-ko.md   # Korean Marp presentation source
@@ -27,6 +28,21 @@ The [demo documentation index](docs/README.md) provides two complete, sequential
 | 1. Java modernization in a Docker Sandbox | [Setup](docs/demo-1-setup.md) | [Runbook](docs/demo-1-runbook-java.md)   | [Validation](docs/demo-1-validation-and-recovery-java.md)   |
 | 1. .NET modernization in a Docker Sandbox | [Setup](docs/demo-1-setup.md) | [Runbook](docs/demo-1-runbook-dotnet.md) | [Validation](docs/demo-1-validation-and-recovery-dotnet.md) |
 | 2. Copilot CLI in an ACA Sandbox          | [Setup](docs/demo-2-setup.md) | [Runbook](docs/demo-2-runbook.md)        | [Validation](docs/demo-2-validation-and-recovery.md)        |
+
+## Open in GitHub Codespaces
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/devkimchi/github-copilot-sandbox)
+
+GitHub Copilot CLI is preinstalled. Run it in the terminal and sign in if prompted:
+
+```bash
+copilot
+```
+
+> [!WARNING]
+> New interactive Copilot sessions default to `allow-all`, automatically approving tool, file, and URL access, subject to organization policy. Use only trusted repositories and disposable data.
+
+For details about the terminal-first layout, see the [extension documentation](.devcontainer/terminal-layout/README.md).
 
 ## Preview the presentation
 
