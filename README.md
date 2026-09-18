@@ -40,12 +40,9 @@ copilot
 ```
 
 > [!WARNING]
-> New interactive Copilot sessions default to `allow-all`, automatically approving
-> tool, file, and URL access, subject to organization policy. Use only trusted
-> repositories and disposable data.
+> New interactive Copilot sessions default to `allow-all`, automatically approving tool, file, and URL access, subject to organization policy. Use only trusted repositories and disposable data.
 
-For details about the terminal-first layout, see the
-[extension documentation](.devcontainer/terminal-layout/README.md).
+For details about the terminal-first layout, see the [extension documentation](.devcontainer/terminal-layout/README.md).
 
 ## Preview the presentation
 
