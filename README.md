@@ -4,6 +4,10 @@ Presentation materials and demo for running GitHub Copilot CLI in Docker Sandbox
 
 The primary presentation was prepared for various conferences and meetups, and covers local microVM isolation, remote sandbox lifecycle automation, and Java/.NET application modernization with GitHub Copilot CLI.
 
+The Korean presentation distinguishes the local sandboxing built into Copilot CLI, Codex CLI, and Claude Code from Docker/ACA execution environments, and separates approval settings from isolation boundaries.
+
+The Korean presentation includes GitHub Codespaces as a supplementary remote-development comparison, not a third sandbox product. The repository's Codespaces setup provides a terminal-first Copilot CLI experience, not an agent-specific outbound network policy; remote execution does not remove access to the workspace, granted tokens, or supplied secrets.
+
 ## Repository contents
 
 ```text
