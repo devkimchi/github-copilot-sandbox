@@ -1,0 +1,55 @@
+{
+  "name": "copilot-sandbox-terminal-layout",
+  "displayName": "Copilot Sandbox Terminal Layout",
+  "description": "Open this sandbox in a terminal-first VS Code layout.",
+  "version": "0.1.0",
+  "publisher": "devkimchi",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devkimchi/github-copilot-sandbox.git",
+    "directory": ".devcontainer/terminal-layout"
+  },
+  "engines": {
+    "vscode": "^1.104.0",
+    "node": ">=22"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilotSandbox.openTerminalLayout",
+        "title": "Copilot Sandbox: Open Terminal Layout"
+      }
+    ],
+    "configuration": {
+      "title": "Copilot Sandbox",
+      "properties": {
+        "copilotSandbox.terminalLayout.enabled": {
+          "type": "boolean",
+          "default": false,
+          "scope": "resource",
+          "description": "Open the terminal layout automatically when this workspace starts."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "prepackage": "node -e \"require('node:fs').copyFileSync('../../LICENSE', 'LICENSE')\"",
+    "package": "vsce package --no-dependencies --out terminal-layout.vsix"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "4.0.0"
+  }
+}

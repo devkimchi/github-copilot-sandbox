@@ -1,0 +1,25 @@
+{
+  "name": "GitHub Copilot Sandbox",
+  "image": "mcr.microsoft.com/devcontainers/universal:6.1.7-noble",
+  "remoteUser": "codespace",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postAttachCommand": "bash .devcontainer/post-attach.sh",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [],
+      "disableAutomaticConfiguration": true
+    },
+    "vscode": {
+      "settings": {
+        "copilotSandbox.terminalLayout.enabled": true,
+        "terminal.integrated.defaultLocation": "editor",
+        "terminal.integrated.enablePersistentSessions": true,
+        "workbench.startupEditor": "none",
+        "workbench.secondarySideBar.defaultVisibility": "hidden",
+        "workbench.activityBar.location": "hidden",
+        "workbench.statusBar.visible": false,
+        "workbench.editor.showTabs": "none"
+      }
+    }
+  }
+}

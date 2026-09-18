@@ -7,3 +7,9 @@ updates:
     labels:
       - dependencies
       - github-actions
+  - package-ecosystem: npm
+    directory: /.devcontainer/terminal-layout
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies

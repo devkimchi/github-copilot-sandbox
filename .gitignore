@@ -19,6 +19,11 @@
 !CHANGELOG.md
 !.github/
 !.github/**
+!.devcontainer/
+!.devcontainer/**
+.devcontainer/**/node_modules/
+.devcontainer/**/*.vsix
+.devcontainer/terminal-layout/LICENSE
 
 # Presentation source and referenced assets.
 !ai-agent-sandboxing-*.md

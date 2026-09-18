@@ -108,6 +108,13 @@ jobs:
             )
           fi
 
+      - name: Validate Codespaces terminal layout extension
+        working-directory: .devcontainer/terminal-layout
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run package
+
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v6

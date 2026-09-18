@@ -12,3 +12,5 @@ when releases are published.
 
 - Initial presentation source and visual assets.
 - Repository health, contribution, and automation files.
+- GitHub Codespaces configuration using an image with Copilot CLI preinstalled,
+  plus a repository-scoped VS Code extension for automatic terminal-first startup.
