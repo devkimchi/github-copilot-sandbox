@@ -46,8 +46,8 @@ On the first VS Code attachment, a small
 [repository-owned extension](.devcontainer/terminal-layout/README.md) is installed
 automatically. It opens a full-width editor terminal, hides both sidebars and the
 bottom panel, and focuses the shell. Container settings keep the activity bar
-(including Codespaces' default compact menu button) and editor tabs visible, while
-hiding the status bar. Use **Terminal > New Terminal** from the menu to open more
+(including Codespaces' default compact menu button), editor tabs, and status bar
+visible. Use **Terminal > New Terminal** from the menu to open more
 editor terminals and switch between them using their tabs. These settings do not
 change the browser profile's application-wide menu bar preference.
 The normal editor UI may appear briefly while setup and extension activation
@@ -98,8 +98,7 @@ node .devcontainer/configure-copilot.js "${COPILOT_HOME:-$HOME/.copilot}"
 
 To reapply the layout, open the Command Palette with **F1** and run
 **Copilot Sandbox: Open Terminal Layout**. To return to a normal editor, set
-`copilotSandbox.terminalLayout.enabled` to `false` and
-`workbench.statusBar.visible` to `true` in workspace settings. Then use
+`copilotSandbox.terminalLayout.enabled` to `false` in workspace settings. Then use
 **View: Toggle Primary Side Bar Visibility** and **View: Toggle Secondary Side Bar Visibility**
 as needed. These changes do not affect VS Code outside this container/workspace.
 

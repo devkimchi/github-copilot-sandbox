@@ -17,7 +17,7 @@
         "workbench.startupEditor": "none",
         "workbench.secondarySideBar.defaultVisibility": "hidden",
         "workbench.activityBar.location": "default",
-        "workbench.statusBar.visible": false,
+        "workbench.statusBar.visible": true,
         "workbench.editor.showTabs": "multiple"
       }
     }
